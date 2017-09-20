@@ -130,3 +130,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
+
+;; mac specif
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+(modify-syntax-entry ?_ "w")
