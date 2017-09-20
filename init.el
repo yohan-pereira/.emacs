@@ -84,6 +84,11 @@
       (interactive)
       (evil-delete (point-at-bol) (point)))))
 
+(use-package evil-tabs
+  :ensure t
+  (global-evil-tabs-mode t))
+  
+
 (use-package org
   :ensure t)
 
@@ -134,4 +139,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 ;; mac specif
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
+(define-key global-map "\M-v" 'yank)
+(define-key global-map "\M-c" 'ns-copy-including-secondary)
 (modify-syntax-entry ?_ "w")
