@@ -1,8 +1,10 @@
 (require 'package)
 
+(add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -16,7 +18,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -61,6 +63,12 @@
 			   helm-c-source-locate)
 			 "*helm-my-buffers*"))))
 
+(use-package helm-projectile
+  :ensure t
+  :config
+  (require 'helm-projectile)
+  (helm-projectile-on))
+
 
 (use-package evil
   :ensure t
@@ -70,6 +78,7 @@
   (setq evil-want-C-u-scroll t)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+  (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
@@ -82,6 +91,9 @@
   :ensure geiser)
 
 (use-package projectile
+  :ensure t)
+
+(use-package dirtree
   :ensure t)
 
 (setq geiser-default-implementation 'racket)
