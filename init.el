@@ -163,7 +163,13 @@
 (define-key global-map "\M-c" 'ns-copy-including-modify)
 
 ;; ansi term related
-(define-key global-map (kbd "<M-return>") (lambda () (interactive (ansi-term "/bin/zsh"))))
+(define-key
+  global-map
+  (kbd "<M-return>")
+  (lambda ()
+    (interactive)
+    (ansi-term "/bin/zsh")))
+
 ;; kill bufffer on exit
 (defun oleh-term-exec-hook ()
   (let* ((buff (current-buffer))
