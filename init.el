@@ -18,7 +18,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (evil-smartparens smartparens parinfer dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -56,12 +56,12 @@
   (defun helm-my-buffers ()
     (interactive)
     (let ((helm-ff-transformer-show-only-basename nil))
-      (helm-other-buffer '(helm-c-source-buffers-list
-			   helm-c-source-elscreen
-			   helm-c-source-ctags
-			   helm-c-source-recentf
-			   helm-c-source-locate)
-			 "*helm-my-buffers*"))))
+      (helm-other-buffer '(helm-c-source-buffers-list)
+         helm-c-source-elscreen
+         helm-c-source-ctags
+         helm-c-source-recentf
+         helm-c-source-locate
+       "*helm-my-buffers*"))))
 
 (use-package helm-projectile
   :ensure t
@@ -95,6 +95,17 @@
 
 (use-package dirtree
   :ensure t)
+
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
+
+(use-package evil-smartparens
+  :ensure t
+  :config
+  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 
 (setq geiser-default-implementation 'racket)
 
