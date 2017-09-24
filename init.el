@@ -161,3 +161,17 @@
 (setq mac-command-modifier 'meta)
 (define-key global-map "\M-v" 'yank)
 (define-key global-map "\M-c" 'ns-copy-including-modify)
+
+;; ansi term related
+(define-key global-map (kbd "<M-return>") (lambda () (interactive (ansi-term "/bin/zsh"))))
+;; kill bufffer on exit
+(defun oleh-term-exec-hook ()
+  (let* ((buff (current-buffer))
+         (proc (get-buffer-process buff)))
+    (set-process-sentinel
+     proc
+     `(lambda (process event)
+        (if (string= event "finished\n")
+            (kill-buffer ,buff))))))
+
+(add-hook 'term-exec-hook 'oleh-term-exec-hook)
