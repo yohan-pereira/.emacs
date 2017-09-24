@@ -18,7 +18,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (evil-smartparens smartparens parinfer dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -79,13 +79,16 @@
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
+  (evil-set-initial-state 'term-mode 'emacs)
+  (evil-set-initial-state 'shell-mode 'emacs)
+  ;; make underscore and hyphen part of words during search
+  (modify-syntax-entry ?_ "w")
+  (modify-syntax-entry ?- "w")
+
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
       (evil-delete (point-at-bol) (point)))))
-
-(use-package org
-  :ensure t)
 
 (use-package org
   :ensure geiser)
@@ -107,6 +110,19 @@
   :config
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 
+(use-package eyebrowse
+  :ensure t
+  :config
+  (eyebrowse-mode t)
+  (setq lexical-binding t)
+  (eyebrowse-setup-opinionated-keys))
+
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t)) 
+
+
 (setq geiser-default-implementation 'racket)
 
 
@@ -117,27 +133,31 @@
     (ruby . t)
     (sh . t)))
 
-(load-theme 'dracula t)
-
 ;; esc quits
-(defun minibuffer-keyboard-quit ()
-  "Abort recursive edit.
-In Delete Selection mode, if the mark is active, just deactivate it;
-then it takes a second \\[keyboard-quit] to abort the minibuffer."
-  (interactive)
-  (if (and delete-selection-mode transient-mark-mode mark-active)
-      (setq deactivate-mark  t)
-    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-    (abort-recursive-edit)))
-(define-key evil-normal-state-map [escape] 'keyboard-quit)
-(define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-(global-set-key [escape] 'evil-exit-emacs-state)
+;;(defun minibuffer-keyboard-quit ()
+;;  "Abort recursive edit.
+;;In Delete Selection mode, if the mark is active, just deactivate it;
+;;then it takes a second \\[keyboard-quit] to abort the minibuffer."
+;;  (interactive)
+
+;;      (setq deactivate-mark  t)
+;;    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+;;    (abort-recursive-edit)))
+;;(define-key evil-normal-state-map [escape] 'keyboard-quit)
+;;(define-key evil-visual-state-map [escape] 'keyboard-quit)
+;;(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+;;(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+;;(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+;;(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+;;(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+;;(global-set-key [escape] 'evil-exit-emacs-state)
 
 
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
+
+;; mac specif
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+(define-key global-map "\M-v" 'yank)
+(define-key global-map "\M-c" 'ns-copy-including-modify)
