@@ -18,7 +18,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -69,6 +69,10 @@
   (require 'helm-projectile)
   (helm-projectile-on))
 
+(use-package helm-ag
+  :ensure t
+  :config
+  (require 'helm-projectile))
 
 (use-package evil
   :ensure t
@@ -122,6 +126,39 @@
   :config
   (load-theme 'dracula t)) 
 
+(use-package shackle
+  :ensure t
+  :config
+  (setq helm-display-function 'pop-to-buffer) ; make helm play nice
+  (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :popup t)))) 
+
+(use-package auto-complete
+  :ensure t
+  :config
+  (ac-config-default))
+
+(use-package enh-ruby-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist
+	       '("\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'" . enh-ruby-mode)))
+
+(use-package robe
+  :ensure t
+  :config
+  (add-hook 'ruby-mode-hook 'robe-mode)
+  (add-hook 'robe-mode-hook 'ac-robe-setup)
+  (define-key robe-mode-map (kbd "<C-return>") 'robe-jump)
+  )
+
+(use-package markdown-mode
+  :ensure t)
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 (setq geiser-default-implementation 'racket)
 
