@@ -74,6 +74,9 @@
   :config
   (require 'helm-projectile))
 
+(use-package ag
+  :ensure t)
+
 (use-package evil
   :ensure t
   :config
