@@ -86,6 +86,7 @@
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
+  (define-key evil-normal-state-map (kbd "C-S-p") 'helm-projectile-find-file-in-known-projects)
   (evil-set-initial-state 'term-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'emacs)
   ;; make underscore and hyphen part of words during search
