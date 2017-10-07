@@ -101,7 +101,14 @@
   :ensure geiser)
 
 (use-package projectile
-  :ensure t)
+  :ensure t
+  :config
+  (define-key
+  global-map
+  (kbd "<M-return>")
+  (lambda ()
+    (interactive)
+    (projectile-run-shell))))
 
 (use-package dirtree
   :ensure t)
@@ -210,12 +217,7 @@
 (define-key global-map "\M-c" 'ns-copy-including-modify)
 
 ;; ansi term related
-(define-key
-  global-map
-  (kbd "<M-return>")
-  (lambda ()
-    (interactive)
-    (ansi-term "/bin/zsh")))
+
 
 ;; kill bufffer on exit
 (defun oleh-term-exec-hook ()
@@ -228,3 +230,5 @@
             (kill-buffer ,buff))))))
 
 (add-hook 'term-exec-hook 'oleh-term-exec-hook)
+
+(setq js-indent-level 2)
