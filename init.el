@@ -177,6 +177,9 @@
 (use-package evil-magit
   :ensure t)
 
+(use-package yaml-mode
+  :ensure t)
+
 (setq geiser-default-implementation 'racket)
 
 
