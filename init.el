@@ -18,7 +18,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (go-mode yaml-mode shackle evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -102,7 +102,14 @@
   :ensure geiser)
 
 (use-package projectile
-  :ensure t)
+  :ensure t
+  :config
+  (define-key
+  global-map
+  (kbd "<M-return>")
+  (lambda ()
+    (interactive)
+    (projectile-run-shell))))
 
 (use-package dirtree
   :ensure t)
@@ -217,12 +224,7 @@
 (define-key global-map "\M-c" 'ns-copy-including-modify)
 
 ;; ansi term related
-(define-key
-  global-map
-  (kbd "<M-return>")
-  (lambda ()
-    (interactive)
-    (ansi-term "/bin/zsh")))
+
 
 ;; kill bufffer on exit
 (defun oleh-term-exec-hook ()
@@ -235,3 +237,5 @@
             (kill-buffer ,buff))))))
 
 (add-hook 'term-exec-hook 'oleh-term-exec-hook)
+
+(setq js-indent-level 2)
