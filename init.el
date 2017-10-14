@@ -53,6 +53,12 @@
   ;; helm-find-files
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
 
+  ;; bind tab to auto complete
+  (define-key
+    helm-map
+    (kbd "<tab>")
+    'helm-execute-persistent-action)
+
   (defun helm-my-buffers ()
     (interactive)
     (let ((helm-ff-transformer-show-only-basename nil))
