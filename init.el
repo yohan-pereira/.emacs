@@ -193,6 +193,14 @@
 (use-package go-mode
   :ensure t)
 
+; clojure related
+
+(use-package clojure-mode
+  :ensure t)
+
+(use-package cider
+  :ensure t)
+
 (setq geiser-default-implementation 'racket)
 
 
