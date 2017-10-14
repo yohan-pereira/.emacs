@@ -17,8 +17,8 @@
    (quote
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
-   (quote
-    (evil-surround evil-cleverparens yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+   (quote)))
+    (evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -85,6 +85,7 @@
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
+  (define-key evil-normal-state-map (kbd "C-S-p") 'helm-projectile-find-file-in-known-projects)
   (evil-set-initial-state 'term-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'emacs)
   ;; make underscore and hyphen part of words during search
@@ -181,6 +182,9 @@
   :ensure t)
 
 (use-package yaml-mode
+  :ensure t)
+
+(use-package go-mode
   :ensure t)
 
 (setq geiser-default-implementation 'racket)
