@@ -18,7 +18,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (evil-surround evil-cleverparens yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete evil-smartparens smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -66,7 +66,6 @@
 (use-package helm-projectile
   :ensure t
   :config
-  (require 'helm-projectile)
   (helm-projectile-on))
 
 (use-package helm-ag
@@ -116,19 +115,23 @@
 (use-package smartparens
   :ensure t
   :config
-  (require 'smartparens-config)
+  (smartparens-global-mode 1)
   (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
 
-(use-package evil-smartparens
+(use-package evil-cleverparens
   :ensure t
   :config
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+  (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package eyebrowse
   :ensure t
   :config
   (eyebrowse-mode t)
-  (setq lexical-binding t)
   (eyebrowse-setup-opinionated-keys))
 
 (use-package dracula-theme
