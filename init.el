@@ -5,6 +5,7 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (setq package-enable-at-startup nil)
 (package-initialize)
@@ -18,7 +19,7 @@
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
  '(package-selected-packages
    (quote
-    (evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -103,8 +104,14 @@
       (interactive)
       (evil-delete (point-at-bol) (point)))))
 
-(use-package org
-  :ensure geiser)
+(use-package evil-org
+  :ensure t
+  :config
+  ;(package-initialize)
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme))))
 
 (use-package projectile
   :ensure t
@@ -122,7 +129,7 @@
 (use-package smartparens
   :ensure t
   :config
-  (smartparens-global-mode 1)
+  ;(smartparens-global-mode 1)
   (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
 
 (use-package evil-cleverparens
@@ -199,17 +206,41 @@
   :ensure t)
 
 (use-package cider
-  :ensure t)
+  :ensure t
+  :config)
+
+; hack to install org from melpa
+(defun org-elpa-installed-p (func &rest args)
+   ;; Only check ELPA to see if Org is installed.
+   ;; This is a workaround to hide the bulit-in Org, and install the newer Org
+   ;; from ELPA.
+   (let ((pkg (car args)))
+     (if (not (equal pkg 'org))
+         (apply func args)
+       (assq pkg package-alist))))
+ 
+ (advice-add 'package-installed-p :around #'org-elpa-installed-p)
+
+
+(use-package org
+  :ensure t
+  :pin org
+  :config
+  (require 'ob-clojure)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((scheme . t)
+     (emacs-lisp . t)
+     (clojure . t)
+     (ruby . t)
+     (sh . t)))
+  (setq org-babel-clojure-backend 'cider))
+  
 
 (setq geiser-default-implementation 'racket)
 
 
-(org-babel-do-load-languages
-  'org-babel-load-languages
-  '((scheme . t)
-    (emacs-lisp . t)
-    (ruby . t)
-    (sh . t)))
+
 
 ;; esc quits
 ;;(defun minibuffer-keyboard-quit ()
