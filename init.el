@@ -88,6 +88,8 @@
   :config
   (add-to-list 'evil-emacs-state-modes 'geiser-repl-mode)
   (evil-mode t)
+  (modify-syntax-entry ?_ "w")
+  (modify-syntax-entry ?- "w")
   (setq evil-want-C-u-scroll t)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
@@ -96,9 +98,7 @@
   (evil-set-initial-state 'term-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'emacs)
   ;; make underscore and hyphen part of words during search
-  (modify-syntax-entry ?_ "w")
-  (modify-syntax-entry ?- "w")
-
+  
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
@@ -130,6 +130,9 @@
   :ensure t
   :config
   ;(smartparens-global-mode 1)
+  (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
 
 (use-package evil-cleverparens
