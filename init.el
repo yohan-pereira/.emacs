@@ -228,16 +228,15 @@
 (use-package org
   :ensure t
   :pin org
-  :config
-  (require 'ob-clojure)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((scheme . t)
-     (emacs-lisp . t)
-     (clojure . t)
-     (ruby . t)
-     (sh . t)))
-  (setq org-babel-clojure-backend 'cider))
+  :config)
+  ;(org-babel-do-load-languages
+  ; 'org-babel-load-languages
+  ; '((scheme . t)
+  ;   (emacs-lisp . t)
+  ;   (clojure . t)
+  ;   (ruby . t)
+  ;   (sh . t)))
+  ;(setq org-babel-clojure-backend 'cider))
   
 
 (setq geiser-default-implementation 'racket)
