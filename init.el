@@ -24,7 +24,7 @@
       ""))))
  '(package-selected-packages
    (quote
-    (org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (evil-org org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -93,15 +93,10 @@
   :config
   (add-to-list 'evil-emacs-state-modes 'geiser-repl-mode)
   (evil-mode t)
-  (modify-syntax-entry ?_ "w")
-  (modify-syntax-entry ?- "w")
-
   (add-hook 'after-change-major-mode-hook
 	    (lambda ()
 	      (modify-syntax-entry ?_ "w")
 	      (modify-syntax-entry ?- "w")))
-     
-
   (setq evil-want-C-u-scroll t)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
@@ -109,8 +104,6 @@
   (define-key evil-normal-state-map (kbd "C-S-p") 'helm-projectile-find-file-in-known-projects)
   (evil-set-initial-state 'term-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'emacs)
-  ;; make underscore and hyphen part of words during search
-
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
       (interactive)
@@ -123,12 +116,9 @@
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
 	    (lambda ()
-	      (evil-org-set-key-theme)))
+              (evil-org-set-key-theme)))
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
-
-;(require 'ox-confluence)
-
 
 (use-package projectile
   :ensure t
@@ -147,6 +137,9 @@
   :ensure t
   :config
   ;(smartparens-global-mode 1)
+  (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
 
 (use-package evil-cleverparens
@@ -242,16 +235,15 @@
 (use-package org
   :ensure t
   :pin org
-  :config
-  (require 'ob-clojure)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((scheme . t)
-     (emacs-lisp . t)
-     (clojure . t)
-     (ruby . t)
-     (sh . t)))
-  (setq org-babel-clojure-backend 'cider))
+  :config)
+  ;(org-babel-do-load-languages
+  ; 'org-babel-load-languages
+  ; '((scheme . t)
+  ;   (emacs-lisp . t)
+  ;   (clojure . t)
+  ;   (ruby . t)
+  ;   (sh . t)))
+  ;(setq org-babel-clojure-backend 'cider))
   
 
 (setq geiser-default-implementation 'racket)
@@ -305,4 +297,14 @@
 
 (setq js-indent-level 2)
 
-(setq org-agenda-files '("/Users/yohan/Documents/notes/"))
+(cond ((eq system-type 'darwin)
+       (setq org-directory "/Users/yohan/Documents/notes")
+       )
+      ((eq system-type 'gnu/linux)
+       ;; Linux-specific code goes here. 
+       (setq org-directory "~/documents/notes-org")
+       ))
+
+(setq org-default-notes-file (concat org-directory "/todo.org"))
+(setq org-agenda-files org-directory)
+(setq org-agenda-files (list org-directory))
