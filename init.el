@@ -17,9 +17,14 @@
  '(custom-safe-themes
    (quote
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
+ '(org-capture-templates
+   (quote
+    (("" "" entry
+      (file "~/Documents/notes/todo.org")
+      ""))))
  '(package-selected-packages
    (quote
-    (org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -88,6 +93,15 @@
   :config
   (add-to-list 'evil-emacs-state-modes 'geiser-repl-mode)
   (evil-mode t)
+  (modify-syntax-entry ?_ "w")
+  (modify-syntax-entry ?- "w")
+
+  (add-hook 'after-change-major-mode-hook
+	    (lambda ()
+	      (modify-syntax-entry ?_ "w")
+	      (modify-syntax-entry ?- "w")))
+     
+
   (setq evil-want-C-u-scroll t)
   (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
@@ -96,8 +110,6 @@
   (evil-set-initial-state 'term-mode 'emacs)
   (evil-set-initial-state 'shell-mode 'emacs)
   ;; make underscore and hyphen part of words during search
-  (modify-syntax-entry ?_ "w")
-  (modify-syntax-entry ?- "w")
 
   (define-key evil-insert-state-map (kbd "C-u")
     (lambda ()
@@ -110,8 +122,13 @@
   ;(package-initialize)
   (add-hook 'org-mode-hook 'evil-org-mode)
   (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme))))
+	    (lambda ()
+	      (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+;(require 'ox-confluence)
+
 
 (use-package projectile
   :ensure t
@@ -287,3 +304,5 @@
 (add-hook 'term-exec-hook 'oleh-term-exec-hook)
 
 (setq js-indent-level 2)
+
+(setq org-agenda-files '("/Users/yohan/Documents/notes/"))
