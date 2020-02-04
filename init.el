@@ -120,6 +120,8 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(add-to-list 'org-modules 'org-habit t)
+
 (use-package projectile
   :ensure t
   :config
