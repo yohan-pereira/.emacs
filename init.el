@@ -9,6 +9,21 @@
 
 (setq package-enable-at-startup nil)
 (package-initialize)
+
+(setq js-indent-level 2)
+
+(cond ((eq system-type 'darwin)
+       (setq org-directory "/Users/yohan/Documents/notes")
+       )
+      ((eq system-type 'gnu/linux)
+       ;; Linux-specific code goes here. 
+       (setq org-directory "~/documents/notes-org")
+       ))
+
+(setq org-default-notes-file (concat org-directory "/todo.org"))
+(setq org-agenda-files org-directory)
+(setq org-agenda-files (list org-directory))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -23,9 +38,13 @@
       (file ,(concat org-directory "/todo.org"))
       "")
      ("i" "interviews")
+     ("ie" "EM")
+     ("iet" "EM telephonic" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
      ("is" "sd[123]")
      ("isf" "sdx final round" entry
-      (file ,(concat org-directory "/interview-final-sdx.org"))
+      (file ,(concat org-directory "/interviews.org"))
       (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
  '(package-selected-packages
    (quote
@@ -302,16 +321,3 @@
 
 (add-hook 'term-exec-hook 'oleh-term-exec-hook)
 
-(setq js-indent-level 2)
-
-(cond ((eq system-type 'darwin)
-       (setq org-directory "/Users/yohan/Documents/notes")
-       )
-      ((eq system-type 'gnu/linux)
-       ;; Linux-specific code goes here. 
-       (setq org-directory "~/documents/notes-org")
-       ))
-
-(setq org-default-notes-file (concat org-directory "/todo.org"))
-(setq org-agenda-files org-directory)
-(setq org-agenda-files (list org-directory))
