@@ -9,6 +9,21 @@
 
 (setq package-enable-at-startup nil)
 (package-initialize)
+
+(setq js-indent-level 2)
+
+(cond ((eq system-type 'darwin)
+       (setq org-directory "/Users/yohan/Documents/notes")
+       )
+      ((eq system-type 'gnu/linux)
+       ;; Linux-specific code goes here. 
+       (setq org-directory "~/documents/notes-org")
+       ))
+
+(setq org-default-notes-file (concat org-directory "/todo.org"))
+(setq org-agenda-files org-directory)
+(setq org-agenda-files (list org-directory))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -17,11 +32,20 @@
  '(custom-safe-themes
    (quote
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
- '(org-capture-templates
+ `(org-capture-templates
    (quote
-    (("" "" entry
-      (file "~/Documents/notes/todo.org")
-      ""))))
+    (("t" "TODO" entry
+      (file ,(concat org-directory "/todo.org"))
+      "")
+     ("i" "interviews")
+     ("ie" "EM")
+     ("iet" "EM telephonic" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
+     ("is" "sd[123]")
+     ("isf" "sdx final round" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
  '(package-selected-packages
    (quote
     (evil-org org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
@@ -297,18 +321,5 @@
 
 (add-hook 'term-exec-hook 'oleh-term-exec-hook)
 
-(setq js-indent-level 2)
-
-(cond ((eq system-type 'darwin)
-       (setq org-directory "/Users/yohan/Documents/notes")
-       )
-      ((eq system-type 'gnu/linux)
-       ;; Linux-specific code goes here. 
-       (setq org-directory "~/documents/notes-org")
-       ))
-
-(setq org-default-notes-file (concat org-directory "/todo.org"))
-(setq org-agenda-files org-directory)
-(setq org-agenda-files (list org-directory))
 ;; auto reload files
 (global-auto-revert-mode t)
