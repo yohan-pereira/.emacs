@@ -310,3 +310,5 @@
 (setq org-default-notes-file (concat org-directory "/todo.org"))
 (setq org-agenda-files org-directory)
 (setq org-agenda-files (list org-directory))
+;; auto reload files
+(global-auto-revert-mode t)
