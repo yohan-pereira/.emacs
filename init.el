@@ -32,23 +32,24 @@
  '(custom-safe-themes
    (quote
     ("f782ed87369a7d568cee28d14922aa6d639f49dd676124d817dd82c8208985d0" "eb0a314ac9f75a2bf6ed53563b5d28b563eeba938f8433f6d1db781a47da1366" default)))
- `(org-capture-templates
+ '(org-capture-templates
    (quote
     (("t" "TODO" entry
-      (file ,(concat org-directory "/todo.org"))
-      "")
+      (file+headline "/Users/yohan/Documents/notes/todo.org" "Tasks")
+      (file "/Users/yohan/Documents/notes/templates/todo.org"))
      ("i" "interviews")
      ("ie" "EM")
      ("iet" "EM telephonic" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
+      (file "/Users/yohan/Documents/notes/interviews.org")
+      (file "/Users/yohan/Documents/notes/templates/interviews/em-telephonic.org"))
      ("is" "sd[123]")
      ("isf" "sdx final round" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
+      (file "/Users/yohan/Documents/notes/interviews.org")
+      (file "/Users/yohan/Documents/notes/templates/interviews/sdx-final.org")))))
+ '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (evil-org org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
+    (## evil-org org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
