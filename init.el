@@ -146,6 +146,7 @@
   (evil-org-agenda-set-keys))
 
 (add-to-list 'org-modules 'org-habit t)
+(setq org-log-done t)
 
 (use-package projectile
   :ensure t
