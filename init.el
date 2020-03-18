@@ -174,6 +174,7 @@
   :ensure t
   :config
   ;(smartparens-global-mode 1)
+  (require 'smartparens-config)
   (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
