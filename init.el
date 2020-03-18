@@ -55,6 +55,7 @@
      ("isf" "sdx final round" entry
       (file ,(concat org-directory "/interviews.org"))
       (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
+ '(org-startup-indented t)
  '(package-selected-packages
    (quote
     (evil-org org-plus-contrib cider clojure-mode shackle org-exp org-confluence org evil-surround evil-cleverparens go-mode yaml-mode evil-magit magit exec-path-from-shell markdown-mode helm-ag robe enh-ruby-mode auto-complete smartparens ag dirtree paredit pastels-on-dark-theme dracula-theme geiser use-package helm evil-visual-mark-mode))))
