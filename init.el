@@ -36,7 +36,7 @@
    (quote
     (("t" "TODO" entry
       (file ,(concat org-directory "/todo.org"))
-      "")
+      (file ,(concat org-directory "/templates/todo.org")))
      ("i" "interviews")
      ("ie" "EM")
      ("iet" "EM telephonic" entry
