@@ -154,6 +154,12 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(use-package org-journal
+  :ensure t
+  :defer t
+  :custom
+  (org-journal-dir (concat org-directory "/journal/")))
+
 (add-to-list 'org-modules 'org-habit t)
 (setq org-log-done t)
 
