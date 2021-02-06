@@ -33,7 +33,6 @@ Setting package-enable-at-startup [[https://www.reddit.com/r/emacs/comments/1rds
 (package-initialize)
 (setq package-enable-at-startup nil)
 
-;TODO document what these do.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -76,6 +75,7 @@ Use the mac standard copy and paste keybindings.
 
 
 ** TODO Misc
+TODO document these
 #+begin_src emacs-lisp
 ;; kill bufffer on exit
 (defun oleh-term-exec-hook ()
@@ -112,6 +112,9 @@ Use the mac standard copy and paste keybindings.
 #+end_src
 
 * Lisps 
+** Editing
+Similar to paredit. Ensures braces are always balanced.
+
 #+begin_src emacs-lisp
 
 (use-package smartparens
@@ -124,18 +127,23 @@ Use the mac standard copy and paste keybindings.
   (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
   
-; clojure related
-
+#+end_src
+** Clojure
+#+begin_src 
 (use-package clojure-mode
   :ensure t)
 
 (use-package cider
   :ensure t
   :config)
+  
+#+end_src
+** Emacs lisp
+eLisp related, needed to jump to function definations
+See https://github.com/chrisdone/elisp-guide#discoverability
 
-;elips related, needed to jump to function definations
-; got from https://github.com/chrisdone/elisp-guide#discoverability
-
+TODO bind this to a key
+#+begin_src emacs-lisp
 (use-package elisp-slime-nav
   :ensure t)
 #+end_src
@@ -158,7 +166,7 @@ Use the mac standard copy and paste keybindings.
   (define-key robe-mode-map (kbd "<C-return>") 'robe-jump))
 #+end_src
 
-* Misc langs
+* Misc
 #+begin_src emacs-lisp
 
 (use-package yaml-mode
