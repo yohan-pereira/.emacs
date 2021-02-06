@@ -48,8 +48,12 @@
      ("ie2" "EM 2" entry
       (file ,(concat org-directory "/interviews.org"))
       (file ,(concat org-directory "/templates/interviews/em-2.org")))
+     ("id" "DoE")
+     ("idt" "DoEtelephonic" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/director-telephonic.org")))
      ("is" "sd[123]")
-     ("isf" "sdx em round" entry
+     ("ise" "sdx em round" entry
       (file ,(concat org-directory "/interviews.org"))
       (file ,(concat org-directory "/templates/interviews/sdx-em.org")))
      ("isf" "sdx final round" entry
