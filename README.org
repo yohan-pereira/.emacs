@@ -1,0 +1,422 @@
+* What am I looking at?
+This is my literate emacs configuration. 
+
+If you want to setup something similar see [[https://harryrschwartz.com/2016/02/15/switching-to-a-literate-emacs-configuration][this]]
+
+And some examples
++ https://harryrschwartz.com/2016/02/15/switching-to-a-literate-emacs-configuration
++ https://jamiecollinson.com/blog/my-emacs-config/
++ https://pages.sachachua.com/.emacs.d/Sacha.html
+
+For an introduction into literate programming in general see
++ https://en.wikipedia.org/wiki/Literate_programming
++ https://www.offerzen.com/blog/literate-programming-empower-your-writing-with-emacs-org-mode
+
+* Bootstrap
+
+Configure upstream repositories.
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+
+(add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+
+#+END_SRC
+
+Initlise package.
+Setting package-enable-at-startup [[https://www.reddit.com/r/emacs/comments/1rdstn/set_packageenableatstartup_to_nil_for_slightly/][optimises]] startup time. 
+
+#+begin_src emacs-lisp
+(package-initialize)
+(setq package-enable-at-startup nil)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+#+end_src
+
+* custom-set-variables
+Load custom file.
+TODO get rid of this and move to static configurations.
+
+#+begin_src emacs-lisp
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+#+end_src
+
+* UI/QoL improvements
+
+** Hide all UI elements
+#+begin_src emacs-lisp
+(tool-bar-mode -1)
+(toggle-scroll-bar -1)
+
+#+end_src
+** Mac specific
+Swap super and meta.
+#+begin_src emacs-lisp
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+#+end_src
+
+Use the mac standard copy and paste keybindings.
+#+begin_src emacs-lisp
+(define-key global-map "\M-v" 'yank)
+(define-key global-map "\M-c" 'ns-copy-including-modify)
+#+end_src
+
+
+
+** TODO Misc
+TODO document these
+#+begin_src emacs-lisp
+;; kill bufffer on exit
+(defun oleh-term-exec-hook ()
+  (let* ((buff (current-buffer))
+         (proc (get-buffer-process buff)))
+    (set-process-sentinel
+     proc
+     `(lambda (process event)
+        (if (string= event "finished\n")
+            (kill-buffer ,buff))))))
+
+(add-hook 'term-exec-hook 'oleh-term-exec-hook)
+
+;; auto reload files
+(global-auto-revert-mode t)
+
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+    
+
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t)) 
+
+(use-package auto-complete
+  :ensure t
+  :config
+  (ac-config-default))
+#+end_src
+
+* Lisps 
+** Editing
+Similar to paredit. Ensures braces are always balanced.
+
+#+begin_src emacs-lisp
+
+(use-package smartparens
+  :ensure t
+  :config
+  ;(smartparens-global-mode 1)
+  (require 'smartparens-config)
+  (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
+  
+#+end_src
+** Clojure
+#+begin_src 
+(use-package clojure-mode
+  :ensure t)
+
+(use-package cider
+  :ensure t
+  :config)
+  
+#+end_src
+** Emacs lisp
+eLisp related, needed to jump to function definations
+See https://github.com/chrisdone/elisp-guide#discoverability
+
+TODO bind this to a key
+#+begin_src emacs-lisp
+(use-package elisp-slime-nav
+  :ensure t)
+#+end_src
+
+* Ruby
+#+begin_src emacs-lisp
+
+(use-package enh-ruby-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist
+	       '("\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'" . enh-ruby-mode)))
+
+(use-package robe
+  :ensure t
+  :config
+  (add-hook 'ruby-mode-hook 'robe-mode)
+  (add-hook 'enh-ruby-mode-hook 'robe-mode)
+  (add-hook 'robe-mode-hook 'ac-robe-setup)
+  (define-key robe-mode-map (kbd "<C-return>") 'robe-jump))
+#+end_src
+
+* Misc
+#+begin_src emacs-lisp
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package markdown-mode
+  :ensure t)
+  
+(use-package go-mode
+  :ensure t)
+
+#+end_src
+
+** Javascript
+#+begin_src emacs-lisp
+(setq js-indent-level 2)
+#+end_src
+
+* Projectile
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (define-key
+      global-map
+      (kbd "<M-return>")
+      (lambda ()
+        (interactive)
+        (projectile-run-shell))))
+#+end_src
+* Helm
+#+begin_src emacs-lisp
+  (use-package helm
+    :ensure t
+    :config
+    ;; helm
+    ;; helm settings (TAB in helm window for actions over selected items,
+    ;; C-SPC to select items)
+    (require 'helm-config)
+    (require 'helm-misc)
+    (require 'helm-locate)
+    (setq helm-quick-update t)
+    (setq helm-bookmark-show-location t)
+    (setq helm-buffers-fuzzy-matching t)
+
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    ;; helm-find-files
+    (global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+    ;; bind tab to auto complete
+    (define-key
+      helm-map
+      (kbd "<tab>")
+      'helm-execute-persistent-action)
+
+    (defun helm-my-buffers ()
+      (interactive)
+      (let ((helm-ff-transformer-show-only-basename nil))
+        (helm-other-buffer '(helm-c-source-buffers-list)
+                           helm-c-source-elscreen
+                           helm-c-source-ctags
+                           helm-c-source-recentf
+                           helm-c-source-locate
+                           "*helm-my-buffers*"))))
+
+  (use-package helm-projectile
+    :ensure t
+    :config
+    (helm-projectile-on))
+
+  (use-package helm-ag
+    :ensure t
+    :config
+    (require 'helm-projectile))
+
+  (use-package ag
+    :ensure t)
+    
+  ;TODO https://depp.brause.cc/shackle/
+  (use-package shackle
+    :ensure t
+    :config
+    (setq helm-display-function 'pop-to-buffer) ; make helm play nice
+    (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :popup t))))
+
+#+end_src
+
+* Magit
+Git client for emacs.
+
+#+begin_src emacs-lisp
+(use-package magit
+  :ensure t)
+#+end_src
+
+* Org mode
+Org and related packages.
+** Init
+#+begin_src emacs-lisp
+  (use-package org
+    :ensure t
+    :pin org
+    :config ;;)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((scheme . t)
+       (emacs-lisp . t)
+       ;;(clojure . t)
+       ;;(ruby . t)
+       ))
+
+  (use-package org-journal
+    :ensure t
+    :defer t
+    :custom
+    (org-journal-dir (concat org-directory "/journal/")))
+    (setq org-babel-clojure-backend 'cider))
+#+end_src
+
+** Visual
+Make org look cleaner (hide * when indenting)
+#+begin_src emacs-lisp
+(setq org-startup-indented t)
+#+end_src
+
+** Time tracking
+Log timestamp when marking things done.
+#+begin_src emacs-lisp
+  (setq org-log-done t)
+#+end_src
+
+Enable org habit for tracking periodic tasks (cycling)
+#+begin_src emacs-lisp
+  (add-to-list 'org-modules 'org-habit t)
+#+end_src
+
+** Babel config
+
+Use racket for SICP.
+#+begin_src emacs-lisp
+  (setq geiser-default-implementation 'racket)
+  
+#+end_src
+
+Suppress the code execution confirmation dialog for scheme.
+#+begin_src emacs-lisp
+  (defun my-org-confirm-babel-evaluate (lang body)
+    (not (string= lang "scheme")))  ;don't ask for ditaa
+  (setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
+#+end_src
+
+** Org directory
+System specific config.
+#+begin_src emacs-lisp
+(cond ((eq system-type 'darwin)
+       (setq org-directory "/Users/yohan/Documents/notes")
+       )
+      ((eq system-type 'gnu/linux)
+       ;; Linux-specific code goes here. 
+       (setq org-directory "~/documents/notes-org")
+       ))
+
+(setq org-default-notes-file (concat org-directory "/todo.org"))
+(setq org-agenda-files org-directory)
+(setq org-agenda-files (list org-directory))
+#+end_src
+** Capture templates
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        (quote
+         (("t" "TODO" entry
+      (file ,(concat org-directory "/todo.org"))
+      (file ,(concat org-directory "/templates/todo.org")))
+     ("i" "interviews")
+     ("ie" "EM")
+     ("iet" "EM telephonic" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
+     ("ie1" "EM 1" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/em-1.org")))
+     ("ie2" "EM 2" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/em-2.org")))
+     ("id" "DoE")
+     ("idt" "DoEtelephonic" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/director-telephonic.org")))
+     ("is" "sd[123]")
+     ("ise" "sdx em round" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/sdx-em.org")))
+     ("isf" "sdx final round" entry
+      (file ,(concat org-directory "/interviews.org"))
+      (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
+#+end_src
+* Evil
+Vi emulation.
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :init
+    ;;needed for evil-collection
+    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (setq evil-want-keybinding nil)
+    :config
+    (add-to-list 'evil-emacs-state-modes 'geiser-repl-mode)
+    (evil-mode t)
+    (add-hook 'after-change-major-mode-hook
+              (lambda ()
+                (modify-syntax-entry ?_ "w")
+                (modify-syntax-entry ?- "w")))
+    (setq evil-want-C-u-scroll t)
+    (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+    (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+    (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
+    (define-key evil-normal-state-map (kbd "C-S-p") 'helm-projectile-find-file-in-known-projects)
+    (evil-set-initial-state 'term-mode 'emacs)
+    (evil-set-initial-state 'shell-mode 'emacs)
+    (define-key evil-insert-state-map (kbd "C-u")
+      (lambda ()
+        (interactive)
+        (evil-delete (point-at-bol) (point)))))
+
+  (use-package evil-org
+    :ensure t
+    :config
+    ;(package-initialize)
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+
+
+  (use-package evil-cleverparens
+    :ensure t
+    :config
+    (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
+
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+
+  ;evil bindings in various places (mainly for magit right now)
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
+#+end_src
