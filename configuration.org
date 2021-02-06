@@ -1,3 +1,18 @@
+* What am I looking at?
+This is my literate emacs configuration. 
+
+If you want to setup something similar see
+https://harryrschwartz.com/2016/02/15/switching-to-a-literate-emacs-configuration
+
+And some examples
+https://harryrschwartz.com/2016/02/15/switching-to-a-literate-emacs-configuration
+https://jamiecollinson.com/blog/my-emacs-config/
+https://pages.sachachua.com/.emacs.d/Sacha.html
+
+For an introduction into literate programming in general see
+https://en.wikipedia.org/wiki/Literate_programming
+https://www.offerzen.com/blog/literate-programming-empower-your-writing-with-emacs-org-mode
+
 * Bootstrap
 
 Configure upstream repositories.
