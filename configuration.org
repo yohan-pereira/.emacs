@@ -104,7 +104,6 @@ Use the mac standard copy and paste keybindings.
   (ac-config-default))
 #+end_src
 
-
 * Lisps 
 #+begin_src emacs-lisp
 
@@ -245,12 +244,9 @@ Git client for emacs.
 #+end_src
 
 * Org mode
+Org and related packages.
+** Init
 #+begin_src emacs-lisp
-  (use-package org-journal
-    :ensure t
-    :defer t
-    :custom
-    (org-journal-dir (concat org-directory "/journal/")))
 
   (add-to-list 'org-modules 'org-habit t)
   (setq org-log-done t)
@@ -281,19 +277,36 @@ Git client for emacs.
        ;;(ruby . t)
        ))
   
+       
+  (use-package org-journal
+    :ensure t
+    :defer t
+    :custom
+    (org-journal-dir (concat org-directory "/journal/")))
     (setq org-babel-clojure-backend 'cider))
 
 
-  (setq geiser-default-implementation 'racket)
-  (defun my-org-confirm-babel-evaluate (lang body)
-    (not (string= lang "scheme")))  ;don't ask for ditaa
-  (setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
 
 #+end_src
 
-** Org directory
-#+begin_src emacs-lisp
+** Babel config
 
+Use racket for SICP.
+#+begin_src emacs-lisp
+  (setq geiser-default-implementation 'racket)
+  
+#+end_src
+
+Suppress the code execution confirmation dialog for scheme.
+#+begin_src emacs-lisp
+  (defun my-org-confirm-babel-evaluate (lang body)
+    (not (string= lang "scheme")))  ;don't ask for ditaa
+  (setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
+#+end_src
+
+** Org directory
+System specific config.
+#+begin_src emacs-lisp
 (cond ((eq system-type 'darwin)
        (setq org-directory "/Users/yohan/Documents/notes")
        )
@@ -306,7 +319,32 @@ Git client for emacs.
 (setq org-agenda-files org-directory)
 (setq org-agenda-files (list org-directory))
 #+end_src
-
+** Capture templates
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        (quote
+         (("t" "TODO" entry
+           (file ,(concat org-directory "/todo.org"))
+           (file ,(concat org-directory "/templates/todo.org")))
+          ("i" "interviews")
+          ("ie" "EM")
+          ("iet" "EM telephonic" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
+          ("ie1" "EM 1" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/em-1.org")))
+          ("ie2" "EM 2" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/em-2.org")))
+          ("is" "sd[123]")
+          ("isf" "sdx em round" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/sdx-em.org")))
+          ("isf" "sdx final round" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
+#+end_src
 * Evil
 Vi emulation.
 #+begin_src emacs-lisp
@@ -356,9 +394,3 @@ Vi emulation.
 (use-package evil-magit
   :ensure t)
 #+end_src
-
-* TODO init.el
-#+BEGIN_SRC emacs-lisp
-;; see custom variables
-
-#+END_SRC
