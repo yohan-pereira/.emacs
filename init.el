@@ -263,6 +263,13 @@
   :ensure t
   :config)
 
+;elips related, needed to jump to function definations
+; got from https://github.com/chrisdone/elisp-guide#discoverability
+
+(use-package elisp-slime-nav
+  :ensure t)
+
+
 ; hack to install org from melpa
 (defun org-elpa-installed-p (func &rest args)
    ;; Only check ELPA to see if Org is installed.
@@ -279,19 +286,21 @@
 (use-package org
   :ensure t
   :pin org
-  :config)
-  ;(org-babel-do-load-languages
-  ; 'org-babel-load-languages
-  ; '((scheme . t)
-  ;   (emacs-lisp . t)
-  ;   (clojure . t)
-  ;   (ruby . t)
-  ;   (sh . t)))
-  ;(setq org-babel-clojure-backend 'cider))
+  :config ;;)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((scheme . t)
+     (emacs-lisp . t)
+     ;;(clojure . t)
+     ;;(ruby . t)
+     ))
+  (setq org-babel-clojure-backend 'cider))
   
 
 (setq geiser-default-implementation 'racket)
-
+(defun my-org-confirm-babel-evaluate (lang body)
+  (not (string= lang "scheme")))  ;don't ask for ditaa
+(setq org-confirm-babel-evaluate #'my-org-confirm-babel-evaluate)
 
 
 
