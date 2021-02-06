@@ -246,10 +246,6 @@ Git client for emacs.
 Org and related packages.
 ** Init
 #+begin_src emacs-lisp
-
-  (add-to-list 'org-modules 'org-habit t)
-  (setq org-log-done t)
-
   (use-package org
     :ensure t
     :pin org
@@ -262,13 +258,29 @@ Org and related packages.
        ;;(ruby . t)
        ))
 
-
   (use-package org-journal
     :ensure t
     :defer t
     :custom
     (org-journal-dir (concat org-directory "/journal/")))
     (setq org-babel-clojure-backend 'cider))
+#+end_src
+
+** Visual
+Make org look cleaner (hide * when indenting)
+#+begin_src emacs-lisp
+(setq org-startup-indented t)
+#+end_src
+
+** Time tracking
+Log timestamp when marking things done.
+#+begin_src emacs-lisp
+  (setq org-log-done t)
+#+end_src
+
+Enable org habit for tracking periodic tasks (cycling)
+#+begin_src emacs-lisp
+  (add-to-list 'org-modules 'org-habit t)
 #+end_src
 
 ** Babel config
