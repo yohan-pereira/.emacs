@@ -37,15 +37,8 @@ TODO get rid of this and move to static configurations.
   (load custom-file))
 #+end_src
 
-* Custom config
-#+begin_src emacs-lisp
-
-(setq js-indent-level 2)
-
-
-#+end_src
-
 * UI/QoL improvements
+
 ** Hide all UI elements
 #+begin_src emacs-lisp
 (tool-bar-mode -1)
@@ -162,6 +155,11 @@ Use the mac standard copy and paste keybindings.
 (use-package go-mode
   :ensure t)
 
+#+end_src
+
+** Javascript
+#+begin_src emacs-lisp
+(setq js-indent-level 2)
 #+end_src
 
 * Projectile
