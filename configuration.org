@@ -250,20 +250,6 @@ Org and related packages.
   (add-to-list 'org-modules 'org-habit t)
   (setq org-log-done t)
 
-
-                                          ; hack to install org from melpa
-  (defun org-elpa-installed-p (func &rest args)
-    ;; Only check ELPA to see if Org is installed.
-    ;; This is a workaround to hide the bulit-in Org, and install the newer Org
-    ;; from ELPA.
-    (let ((pkg (car args)))
-      (if (not (equal pkg 'org))
-          (apply func args)
-        (assq pkg package-alist))))
-
-  (advice-add 'package-installed-p :around #'org-elpa-installed-p)
-
-
   (use-package org
     :ensure t
     :pin org
@@ -283,9 +269,6 @@ Org and related packages.
     :custom
     (org-journal-dir (concat org-directory "/journal/")))
     (setq org-babel-clojure-backend 'cider))
-
-
-
 #+end_src
 
 ** Babel config
