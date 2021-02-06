@@ -347,49 +347,57 @@ System specific config.
 * Evil
 Vi emulation.
 #+begin_src emacs-lisp
-(use-package evil
-  :ensure t
-  :config
-  (add-to-list 'evil-emacs-state-modes 'geiser-repl-mode)
-  (evil-mode t)
-  (add-hook 'after-change-major-mode-hook
-	    (lambda ()
-	      (modify-syntax-entry ?_ "w")
-	      (modify-syntax-entry ?- "w")))
-  (setq evil-want-C-u-scroll t)
-  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-  (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
-  (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
-  (define-key evil-normal-state-map (kbd "C-S-p") 'helm-projectile-find-file-in-known-projects)
-  (evil-set-initial-state 'term-mode 'emacs)
-  (evil-set-initial-state 'shell-mode 'emacs)
-  (define-key evil-insert-state-map (kbd "C-u")
-    (lambda ()
-      (interactive)
-      (evil-delete (point-at-bol) (point)))))
+  (use-package evil
+    :ensure t
+    :init
+    ;;needed for evil-collection
+    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (setq evil-want-keybinding nil)
+    :config
+    (add-to-list 'evil-emacs-state-modes 'geiser-repl-mode)
+    (evil-mode t)
+    (add-hook 'after-change-major-mode-hook
+              (lambda ()
+                (modify-syntax-entry ?_ "w")
+                (modify-syntax-entry ?- "w")))
+    (setq evil-want-C-u-scroll t)
+    (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+    (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+    (define-key evil-normal-state-map "\C-p" 'helm-projectile-find-file)
+    (define-key evil-normal-state-map (kbd "C-S-p") 'helm-projectile-find-file-in-known-projects)
+    (evil-set-initial-state 'term-mode 'emacs)
+    (evil-set-initial-state 'shell-mode 'emacs)
+    (define-key evil-insert-state-map (kbd "C-u")
+      (lambda ()
+        (interactive)
+        (evil-delete (point-at-bol) (point)))))
 
-(use-package evil-org
-  :ensure t
-  :config
-  ;(package-initialize)
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-	    (lambda ()
-              (evil-org-set-key-theme)))
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
-  
+  (use-package evil-org
+    :ensure t
+    :config
+    ;(package-initialize)
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme)))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
 
-(use-package evil-cleverparens
-  :ensure t
-  :config
-  (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
 
-(use-package evil-surround
-  :ensure t
-  :config
-  (global-evil-surround-mode 1))
-  
-(use-package evil-magit
-  :ensure t)
+  (use-package evil-cleverparens
+    :ensure t
+    :config
+    (add-hook 'smartparens-enabled-hook #'evil-cleverparens-mode))
+
+  (use-package evil-surround
+    :ensure t
+    :config
+    (global-evil-surround-mode 1))
+
+  ;evil bindings in various places (mainly for magit right now)
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
 #+end_src
