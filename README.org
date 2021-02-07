@@ -8,7 +8,7 @@ And some examples
 + https://jamiecollinson.com/blog/my-emacs-config/
 + https://pages.sachachua.com/.emacs.d/Sacha.html
 
-For an introduction into literate programming in general see
+For an introduction to literate programming in general see
 + https://en.wikipedia.org/wiki/Literate_programming
 + https://www.offerzen.com/blog/literate-programming-empower-your-writing-with-emacs-org-mode
 
@@ -42,7 +42,6 @@ Setting package-enable-at-startup [[https://www.reddit.com/r/emacs/comments/1rds
 
 * custom-set-variables
 Load custom file.
-TODO get rid of this and move to static configurations.
 
 #+begin_src emacs-lisp
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -279,8 +278,9 @@ Org and related packages.
          'org-babel-load-languages
          '((scheme . t)
            (emacs-lisp . t)
-           ;;(clojure . t)
-           ;;(ruby . t)
+           (clojure . t)
+           (ruby . t)
+           (shell . t)
            ))
 
       (use-package org-journal
