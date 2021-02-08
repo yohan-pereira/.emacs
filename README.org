@@ -324,32 +324,32 @@ System specific config.
 ** Capture templates
 #+begin_src emacs-lisp
   (setq org-capture-templates
-        (quote
-         (("t" "TODO" entry
-      (file ,(concat org-directory "/todo.org"))
-      (file ,(concat org-directory "/templates/todo.org")))
-     ("i" "interviews")
-     ("ie" "EM")
-     ("iet" "EM telephonic" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
-     ("ie1" "EM 1" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/em-1.org")))
-     ("ie2" "EM 2" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/em-2.org")))
-     ("id" "DoE")
-     ("idt" "DoEtelephonic" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/director-telephonic.org")))
-     ("is" "sd[123]")
-     ("ise" "sdx em round" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/sdx-em.org")))
-     ("isf" "sdx final round" entry
-      (file ,(concat org-directory "/interviews.org"))
-      (file ,(concat org-directory "/templates/interviews/sdx-final.org"))))))
+     
+         `(("t" "TODO" entry
+           (file ,(concat org-directory "/todo.org"))
+           (file ,(concat org-directory "/templates/todo.org")))
+          ("i" "interviews")
+          ("ie" "EM")
+          ("iet" "EM telephonic" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/em-telephonic.org")))
+          ("ie1" "EM 1" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/em-1.org")))
+          ("ie2" "EM 2" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/em-2.org")))
+          ("id" "DoE")
+          ("idt" "DoEtelephonic" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/director-telephonic.org")))
+          ("is" "sd[123]")
+          ("ise" "sdx em round" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/sdx-em.org")))
+          ("isf" "sdx final round" entry
+           (file ,(concat org-directory "/interviews.org"))
+           (file ,(concat org-directory "/templates/interviews/sdx-final.org")))))
 #+end_src
 * Evil
 Vi emulation.
