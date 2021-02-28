@@ -57,12 +57,24 @@ Load custom file.
 (toggle-scroll-bar -1)
 
 #+end_src
-** Mac specific
-Swap super and meta.
+** Modifiers
+Use super (command on mac and the windows key on pc) for meta.
+
+Swapping this to make using the [[https://ergodox-ez.com/pages/planck][planck]] with both
+mac and linux more seamless.
+
+On mac
 #+begin_src emacs-lisp
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
 #+end_src
+
+On X
+#+begin_src emacs-lisp
+  (setq x-super-keysym 'meta)
+#+end_src
+
+** Mac specific
 
 Use the mac standard copy and paste keybindings.
 #+begin_src emacs-lisp
