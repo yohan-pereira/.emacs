@@ -188,7 +188,9 @@ TODO bind this to a key
 (use-package go-mode
   :ensure t)
 
-#+end_src
+(use-package scad-mode
+  :ensure t)
+  #+end_src
 
 ** Javascript
 #+begin_src emacs-lisp
