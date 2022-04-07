@@ -158,6 +158,19 @@ TODO bind this to a key
   :ensure t)
 #+end_src
 
+** Scheme
+For [[https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html][SICP]]. 
+Use racket as the default scheme implementation.
+#+begin_src emacs-lisp
+  (use-package geiser
+    :ensure t
+    :init
+    (setq geiser-default-implementation 'racket))
+
+  (use-package geiser-racket
+    :ensure t)
+#+end_src
+
 * Ruby
 #+begin_src emacs-lisp
 
@@ -302,15 +315,15 @@ Org and related packages.
         :defer t
         :custom
         (org-journal-dir (concat org-directory "/journal/")))
-        (setq org-babel-clojure-backend 'cider))
+        )
 #+end_src
 
 ** Babel config
 
-Use racket for SICP.
+Use cider for clojure
+
 #+begin_src emacs-lisp
-  (setq geiser-default-implementation 'racket)
-  
+(setq org-babel-clojure-backend 'cider)
 #+end_src
 
 Suppress the code execution confirmation dialog for scheme.
