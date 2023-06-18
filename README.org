@@ -127,17 +127,25 @@ Similar to paredit. Ensures braces are always balanced.
 
 #+begin_src emacs-lisp
 
-(use-package smartparens
-  :ensure t
-  :config
-  ;(smartparens-global-mode 1)
-  (require 'smartparens-config)
-  (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
+  (use-package smartparens
+    :ensure t
+    :config
+    ;(smartparens-global-mode 1)
+    (require 'smartparens-config)
+    (add-hook 'clojure-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'scheme-mode-hook 'turn-on-smartparens-strict-mode)
+    (add-hook 'geiser-repl-mode 'turn-on-smartparens-strict-mode)
+    (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode))
   
 #+end_src
+
+Rainbow parens
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t)
+#+end_src
+
 ** Clojure
 #+begin_src emacs-lisp
 (use-package clojure-mode
@@ -163,12 +171,13 @@ For [[https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html
 Use racket as the default scheme implementation.
 #+begin_src emacs-lisp
   (use-package geiser
-    :ensure t
-    :init
-    (setq geiser-default-implementation 'racket))
+    :ensure t)
 
   (use-package geiser-racket
     :ensure t)
+
+  ;(use-package geiser-chicken
+  ;  :ensure t)
 #+end_src
 
 * Ruby
@@ -192,15 +201,17 @@ Use racket as the default scheme implementation.
 * Misc
 #+begin_src emacs-lisp
 
-(use-package yaml-mode
-  :ensure t)
+  (use-package yaml-mode
+    :ensure t)
 
-(use-package markdown-mode
-  :ensure t)
+  (use-package markdown-mode
+    :ensure t)
   
-(use-package go-mode
-  :ensure t)
+  (use-package go-mode
+    :ensure t)
 
+  (use-package lua-mode
+    :ensure t)
 #+end_src
 
 ** Javascript
@@ -315,6 +326,26 @@ Org and related packages.
         (org-journal-dir (concat org-directory "/journal/")))
         )
 #+end_src
+** Org roam
+An implementation of the 
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+        :ensure t
+        :bind (("C-c n l" . org-roam-buffer-toggle)
+               ("C-c n f" . org-roam-node-find)
+               ("C-c n g" . org-roam-graph)
+               ("C-c n i" . org-roam-node-insert)
+               ("C-c n c" . org-roam-capture)
+               ;; Dailies
+               ("C-c n j" . org-roam-dailies-capture-today))
+        :config
+        (org-roam-setup)
+        (setq org-roam-v2-ack t)
+        ;; If using org-roam-protocol
+        (server-start)
+        (require 'org-roam-protocol))
+#+end_src
 
 ** Babel config
 
@@ -334,17 +365,18 @@ Suppress the code execution confirmation dialog for scheme.
 ** Org directory
 System specific config.
 #+begin_src emacs-lisp
-(cond ((eq system-type 'darwin)
-       (setq org-directory "/Users/yohan/Documents/notes")
-       )
-      ((eq system-type 'gnu/linux)
-       ;; Linux-specific code goes here. 
-       (setq org-directory "~/documents/notes-org")
-       ))
+  (cond ((eq system-type 'darwin)
+         (setq org-directory "/Users/yohan/Documents/notes")
+         )
+        ((eq system-type 'gnu/linux)
+         ;; Linux-specific code goes here. 
+         (setq org-directory "~/documents/notes-org")
+         ))
 
-(setq org-default-notes-file (concat org-directory "/todo.org"))
-(setq org-agenda-files org-directory)
-(setq org-agenda-files (list org-directory))
+  (setq org-default-notes-file (concat org-directory "/todo.org"))
+  (setq org-agenda-files org-directory)
+  (setq org-roam-directory (concat org-directory "/roam/"))
+  (setq org-agenda-files (append (list org-directory) (list org-roam-directory)))
 #+end_src
 ** Capture templates
 #+begin_src emacs-lisp
