@@ -206,11 +206,14 @@ Use racket as the default scheme implementation.
 
   (use-package markdown-mode
     :ensure t)
-  
+
   (use-package go-mode
     :ensure t)
 
   (use-package lua-mode
+    :ensure t)
+
+  (use-package scad-mode
     :ensure t)
 #+end_src
 
