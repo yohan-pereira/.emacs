@@ -215,6 +215,9 @@ Use racket as the default scheme implementation.
 
   (use-package scad-mode
     :ensure t)
+  
+  (use-package ledger-mode
+    :ensure t)
 #+end_src
 
 ** Javascript
